@@ -6,9 +6,8 @@ import sun from '../assets/images/sun.png'
 import cloud from '../assets/images/cloudAndSun.png'
 import rain from '../assets/images/rain.png'
 import storm from '../assets/images/storm.png'
-
+import LastWeek from '../components/lastWeek';
 const Sentiment = require('sentiment');
-
 
 
 const Weather = () => {
@@ -88,6 +87,10 @@ const Weather = () => {
             </h3>
             <p>noticias con love: { goods.loveCount }, noticias con hope: { goods.hopeCount }, noticias con joy: { goods.joyCount } </p>
             <p>noticias con anger: { bads.angerCount }, noticias con fear: { bads.fearCount }, noticias con sadness: { bads.sadnessCount } </p>
+            <div>
+                <LastWeek>
+                </LastWeek>
+            </div>
         </div>
     );
 }
