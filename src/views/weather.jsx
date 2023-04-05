@@ -12,6 +12,7 @@ const Sentiment = require('sentiment');
 
 const Weather = () => {
 
+    /*
     const [ news, setNews ] = useState([]);
     const [ bads, setBads] = useState(0)
     const [ goods, setGoods] = useState(0)
@@ -67,29 +68,28 @@ const Weather = () => {
     } else if (totalMedia < -2.5 ){
         icon = <img src={storm} alt='sun'></img>;
     }
-
+*/
 
 
 
     return (        
         <div>
             <div>
-                { icon }
+                {/* icon */}
             </div>
             <h1>
                 Clima informativo:
             </h1>
-            <h3>
+            {/*<h3>
                 Buenas noticias: { goods.totalCount }
             </h3>
             <h3>
                 Malas noticias: { bads.totalCount }
             </h3>
             <p>noticias con love: { goods.loveCount }, noticias con hope: { goods.hopeCount }, noticias con joy: { goods.joyCount } </p>
-            <p>noticias con anger: { bads.angerCount }, noticias con fear: { bads.fearCount }, noticias con sadness: { bads.sadnessCount } </p>
+            <p>noticias con anger: { bads.angerCount }, noticias con fear: { bads.fearCount }, noticias con sadness: { bads.sadnessCount } </p>*/}
             <div>
-                <LastWeek>
-                </LastWeek>
+                <LastWeek></LastWeek>
             </div>
         </div>
     );

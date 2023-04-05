@@ -18,15 +18,12 @@ const LastWeek = () => {
         const weekdayName = weekdays[weekdayIndex];
         lastSevenDays.push({ day: day, isoDate: isoDate, weekday: weekdayName});
     }
-    console.log('lastSevenDays: ', lastSevenDays)
 
     const promises = [];
 
     for (let i = 0; i < 5; i++) {
         let day1 = lastSevenDays[i].isoDate;
         let day2 = lastSevenDays[i + 1].isoDate;
-        console.log('day1: ', day1);
-        console.log('day2: ', day2);
         const promise = getGeneralTopHeadlinesAllWeek(day1, day2)
             .then((response) => {
                 if(response.status === 200){
@@ -38,13 +35,11 @@ const LastWeek = () => {
 
     
     Promise.all(promises).then((articlesArrays) => {
-        console.log('articlesArrays: ', articlesArrays);
         const sentimentScores = [];
         const comparativeMediaArray = [];
         for (let i = 0; i < 5; i++){
             const sentiment = new Sentiment();
             const articlesPerDay = articlesArrays[i];
-            console.log('articlesPerDay: ', articlesPerDay);
             const titlesArray = [];
             articlesPerDay.forEach(article => {
                 titlesArray.push(article.title);
@@ -58,21 +53,22 @@ const LastWeek = () => {
         const comparativeMedia = comparativesSuma / comparatives.length;
         comparativeMediaArray.push(comparativeMedia)
         }
-        console.log('comparativeMediaArray: ', comparativeMediaArray);
         for (let i = 0; i < lastSevenDays.length; i++) {
             lastSevenDays[i].score = comparativeMediaArray[i];
         }
     });
 
+    console.log('lastSevenDays: ', lastSevenDays)
 
 
     return (
         <div>
+            <h3>lastWeek</h3>
             {
                 lastSevenDays.map((day, index) => {
                     return (
                         <WeekDay
-                            key={index} date={day.day} weekday={day.weekdayName} icon={day.score}>
+                            key={index} date={day.isoDate} weekday={day.weekday}>
                         </WeekDay>
                     )
                 })

@@ -1,12 +1,12 @@
 import React from 'react';
 
-const WeekDay = ({ props }) => {
+const WeekDay = ({ date, weekday }) => {
     return (
         <div>
             <tr>
-                <td>{ props.weekday }</td>
-                <td>{ props.date }</td>
-                <td>{ props.icon }</td>
+                <td>{ weekday }</td>
+                <td>{ date }</td>
+                
             </tr>
         </div>
     );
