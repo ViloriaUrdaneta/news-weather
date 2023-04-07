@@ -18,8 +18,6 @@ const WeekDay = ({ date, weekday, score }) => {
         icon = <img src={storm} alt='sun'></img>;
     }
 
-    console.log(score)
-
     return (
         <div>
             <tr>

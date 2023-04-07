@@ -1,18 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { getGeneralTopHeadlines } from '../APIService/newsAPI';
-import { badNewsCount } from '../APIService/badNews'
-import { goodNewsCount } from '../APIService/goodNews'
-import sun from '../assets/images/sun.png'
-import cloud from '../assets/images/cloudAndSun.png'
-import rain from '../assets/images/rain.png'
-import storm from '../assets/images/storm.png'
+import { todayScore } from '../APIService/todayScore'
 import LastWeek from '../components/lastWeek';
-const Sentiment = require('sentiment');
+import Today from '../components/pure/today';
+
 
 
 const Weather = () => {
 
-    /*
+    const [ data, setData] = useState({ score: 0, hope: '', fear: '' });
+
+    useEffect(() => {  
+        todayScore()
+            .then((response) => {
+                setData(response)
+                console.log('response: ', response)
+                })
+            .catch((error) => {alert('error en setData: ', error)});                
+    },[]);
+
+
+    if (data.score === 0) {
+        return <div>Loading...</div>;
+    }
+
+    return (        
+        <div>
+            <h1>
+                Clima informativo:
+            </h1>
+            <div>
+                {<Today score={ data.score?.toFixed(2)}></Today>}
+            </div>
+            <h3>
+                Buenas noticias: { data.hope }
+            </h3>
+            <h3>
+                Malas noticias: { data.fear }
+            </h3>
+            <p>
+                La puntuación de sentimiento del 1 al 10 es de: { data && data.score ? data.score.toFixed(2) : 'N/A'  }
+            </p>
+            {/*
+            <p>noticias con love: { goods.loveCount }, noticias con hope: { goods.hopeCount }, noticias con joy: { goods.joyCount } </p>
+            <p>noticias con anger: { bads.angerCount }, noticias con fear: { bads.fearCount }, noticias con sadness: { bads.sadnessCount } </p>*/}
+            <div>
+                <LastWeek></LastWeek>
+            </div>
+        </div>
+    );
+}
+
+export default Weather;
+
+
+
+/**
+ *     /*
     const [ news, setNews ] = useState([]);
     const [ bads, setBads] = useState(0)
     const [ goods, setGoods] = useState(0)
@@ -69,30 +112,3 @@ const Weather = () => {
         icon = <img src={storm} alt='sun'></img>;
     }
 */
-
-
-
-    return (        
-        <div>
-            <div>
-                {/* icon */}
-            </div>
-            <h1>
-                Clima informativo:
-            </h1>
-            {/*<h3>
-                Buenas noticias: { goods.totalCount }
-            </h3>
-            <h3>
-                Malas noticias: { bads.totalCount }
-            </h3>
-            <p>noticias con love: { goods.loveCount }, noticias con hope: { goods.hopeCount }, noticias con joy: { goods.joyCount } </p>
-            <p>noticias con anger: { bads.angerCount }, noticias con fear: { bads.fearCount }, noticias con sadness: { bads.sadnessCount } </p>*/}
-            <div>
-                <LastWeek></LastWeek>
-            </div>
-        </div>
-    );
-}
-
-export default Weather;

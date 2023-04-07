@@ -55,7 +55,7 @@ const LastWeek = () => {
                     let analysis = sentiment.analyze(title);
                     sentimentScores.push(analysis);
                 });
-
+                console.log('sentimentScores: ', sentimentScores)
                 const comparatives = sentimentScores.map((score) => score.comparative);
                 const comparativesSuma = comparatives.reduce((a, b) => a + b, 0);
                 const comparativeMedia = comparativesSuma / comparatives.length;
