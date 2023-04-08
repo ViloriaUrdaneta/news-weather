@@ -17,68 +17,51 @@ const LastWeek = () => {
         const isoDate = day.toISOString().slice(0, 10);
         const opciones = { day: '2-digit', month: '2-digit', year: 'numeric' };
         const esDate = day.toLocaleDateString('es-ES', opciones).slice(0, 5);;
-        const weekdayIndex =day.getDay();
+        const weekdayIndex = day.getDay();
         const weekdayName = weekdays[weekdayIndex];
         lastSevenDays.push({ day: day, isoDate: isoDate, weekday: weekdayName, esDate: esDate});
     }
 
     const getArticles = async () => {
-        const sentimentScores = [];
+        
         const comparativeMediaArray = [];
-        const promises = [];
 
         for (let i = 0; i < 6; i++) {
+            //ayer y anteayer
             let day1 = lastSevenDays[i].isoDate;
             let day2 = lastSevenDays[i + 1].isoDate;
-            const promise = getGeneralTopHeadlinesAllWeek(day1, day2)
-                .then((response) => {
-                    if (response.status === 200) {
-                        return response.data.articles;
-                    }
-                })
-                .catch((error) => console.log("error en  getGeneralTopHeadlinesAllWeek: ", error));
-            promises.push(promise);
-        }
-
-        try {
-            const articlesPerDayArray = await Promise.all(promises);
-
-            articlesPerDayArray.forEach((articlesPerDay) => {
+            //llamar a la API
+            const GeneralTopHeadlinesAllWeek=  await getGeneralTopHeadlinesAllWeek(day1, day2);
+            console.log('GeneralTopHeadlinesAllWeek', GeneralTopHeadlinesAllWeek, i, day1, day2)
+            //Separar articulos de la API
+            const articlesPerDayArray = GeneralTopHeadlinesAllWeek.data.articles;
+            //Por cada articulo tomar su título
+            const titlesPerDay = articlesPerDayArray.map((article) => 
+                article.title
+            )  
+            const sentimentScores = [];  
+            titlesPerDay.forEach((title) => {
                 const sentiment = new Sentiment();
-                const titlesArray = [];
-
-                articlesPerDay.forEach((article) => {
-                    titlesArray.push(article.title);
-                });
-
-                titlesArray.forEach((title) => {
-                    let analysis = sentiment.analyze(title);
-                    sentimentScores.push(analysis);
-                });
-                console.log('sentimentScores: ', sentimentScores)
-                const comparatives = sentimentScores.map((score) => score.comparative);
-                const comparativesSuma = comparatives.reduce((a, b) => a + b, 0);
-                const comparativeMedia = comparativesSuma / comparatives.length;
-                comparativeMediaArray.push(comparativeMedia);
+                let analysis = sentiment.analyze(title);
+                sentimentScores.push(analysis);
             });
+            const comparatives = sentimentScores.map((score) => score.comparative);
+            const comparativesSuma = comparatives.reduce((a, b) => a + b, 0);
+            const comparativeMedia = comparativesSuma / comparatives.length;
+            comparativeMediaArray.push(comparativeMedia);
+        };
 
-            for (let i = 0; i < lastSevenDays.length; i++) {
-                lastSevenDays[i].score = comparativeMediaArray[i];
-            }
-            
-            lastSevenDays.pop();
-            console.log("lastSevenDays: ", lastSevenDays);
-            setData(lastSevenDays);
-            
-        } catch (error) {
-            console.log("error en getGeneralTopHeadlinesAllWeek: ", error);
+        for (let i = 0; i < lastSevenDays.length; i++) {
+            lastSevenDays[i].score = comparativeMediaArray[i];
         }
-    };
-
+                
+        lastSevenDays.pop();
+        setData(lastSevenDays);       
+    }
+    
     useEffect(() => {
         const fetchArticles = async () => {
             await getArticles();
-            
         };
         fetchArticles();
     }, []);
@@ -88,21 +71,25 @@ const LastWeek = () => {
     }
 
     return (
-        <div>
+        <div className=''>
             <h3>lastWeek</h3>
-            {
-                data.map((day, index) => {
-                    return (
-                        <WeekDay
-                            key={index} date={day.esDate} weekday={day.weekday} score={day.score}>
-                        </WeekDay>
-                    )
-                })
-            }
+            <table className='weekSection'>
+                <tbody>
+                    {
+                        data.map((day, index) => {
+                            return (
+                                <WeekDay
+                                    key={index} date={day.esDate} weekday={day.weekday} score={day.score}>
+                                </WeekDay>
+                            )
+                        })
+                    }
+                </tbody>
+            </table>
         </div>
     );
-}
 
+}
 export default LastWeek;
 
 
@@ -152,3 +139,68 @@ export default LastWeek;
  * 
  * 
  */
+
+
+
+    /***
+     * 
+     * const getArticles = async () => {
+        const sentimentScores = [];
+        const comparativeMediaArray = [];
+        const promises = [];
+
+        for (let i = 0; i < 6; i++) {
+            let day1 = lastSevenDays[i].isoDate;
+            let day2 = lastSevenDays[i + 1].isoDate;
+            const promise = getGeneralTopHeadlinesAllWeek(day1, day2)
+                .then((response) => {
+                    if (response.status === 200) {
+                        return response.data.articles;
+                    }
+                })
+                .catch((error) => console.log("error en  getGeneralTopHeadlinesAllWeek: ", error));
+            promises.push(promise);
+        }
+
+        try {
+            const articlesPerDayArray = await Promise.all(promises);
+            console.log('articlesPerDayArray', articlesPerDayArray )
+            articlesPerDayArray.forEach((articlesPerDay) => {
+                const sentiment = new Sentiment();
+                const titlesArray = [];
+                articlesPerDay.forEach((article) => {
+                    titlesArray.push(article.title);
+                });
+
+                titlesArray.forEach((title) => {
+                    let analysis = sentiment.analyze(title);
+                    sentimentScores.push(analysis);
+                });
+                console.log('sentimentScores: ', sentimentScores)
+                const comparatives = sentimentScores.map((score) => score.comparative);
+                const comparativesSuma = comparatives.reduce((a, b) => a + b, 0);
+                const comparativeMedia = comparativesSuma / comparatives.length;
+                comparativeMediaArray.push(comparativeMedia);
+            });
+
+            for (let i = 0; i < lastSevenDays.length; i++) {
+                lastSevenDays[i].score = comparativeMediaArray[i];
+            }
+            
+            lastSevenDays.pop();
+            console.log("lastSevenDays: ", lastSevenDays);
+            setData(lastSevenDays);
+            
+        } catch (error) {
+            console.log("error en getGeneralTopHeadlinesAllWeek: ", error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchArticles = async () => {
+            await getArticles();
+        };
+        fetchArticles();
+    }, []);
+     * 
+     */

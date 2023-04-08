@@ -19,33 +19,42 @@ const Weather = () => {
     },[]);
 
 
+    let content;
+
     if (data.score === 0) {
-        return <div>Loading...</div>;
+        content = (
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        );
+    } else{
+        content = (
+            <div>
+                <h1 className='display-2'>
+                    News Weather App
+                </h1>
+                <div>
+                    {<Today score={ data.score?.toFixed(2)}></Today>}
+                </div>
+                <h3>
+                    Buenas noticias: { data.hope }
+                </h3>
+                <h3>
+                    Malas noticias: { data.fear }
+                </h3>
+                <p>
+                    La puntuación de sentimiento del 1 al 10 es de: { data && data.score ? data.score.toFixed(2) : 'N/A'  }
+                </p>
+                <div>
+                    <LastWeek></LastWeek>
+                </div>
+        </div>
+        )
     }
 
     return (        
-        <div>
-            <h1>
-                Clima informativo:
-            </h1>
-            <div>
-                {<Today score={ data.score?.toFixed(2)}></Today>}
-            </div>
-            <h3>
-                Buenas noticias: { data.hope }
-            </h3>
-            <h3>
-                Malas noticias: { data.fear }
-            </h3>
-            <p>
-                La puntuación de sentimiento del 1 al 10 es de: { data && data.score ? data.score.toFixed(2) : 'N/A'  }
-            </p>
-            {/*
-            <p>noticias con love: { goods.loveCount }, noticias con hope: { goods.hopeCount }, noticias con joy: { goods.joyCount } </p>
-            <p>noticias con anger: { bads.angerCount }, noticias con fear: { bads.fearCount }, noticias con sadness: { bads.sadnessCount } </p>*/}
-            <div>
-                <LastWeek></LastWeek>
-            </div>
+        <div className='container'>
+            { content }
         </div>
     );
 }

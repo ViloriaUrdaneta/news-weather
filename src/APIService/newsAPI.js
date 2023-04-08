@@ -32,7 +32,7 @@ export function getGeneralTopHeadlines(){
 }
 
 export function getGeneralTopHeadlinesAllWeek(day1, day2){
-    return APIRequest.get(`/top-headlines?country=us&category=general&from=${day1}to=${day2}sortBy=popularity&apiKey=${key}`)
+    return APIRequest.get(`/everything?q=general&from=${day1}&to=${day2}&sortBy=popularity&apiKey=${key}`)
 }
 
 export function getPrueba(){

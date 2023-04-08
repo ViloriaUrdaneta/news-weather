@@ -33,11 +33,8 @@ export async function todayScore() {
     const comparatives = sentimentScores.map((score) => score.comparative);
     const comparativesSuma = comparatives.reduce((a, b) => a + b, 0);
     const comparativeMedia = comparativesSuma / comparatives.length;
-    console.log('comparativeMedia', comparativeMedia + 5)
     const goodsProportion = (hope / ( hope + fear )) * 10;
-    console.log('goodsProportion', goodsProportion)
     const totalMedia = (goodsProportion + (comparativeMedia + 5)) / 2;
-    console.log( 'totalMedia: ', totalMedia);
     
 
     return {
