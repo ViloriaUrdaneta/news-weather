@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { todayScore } from '../APIService/todayScore'
 import LastWeek from '../components/lastWeek';
 import Today from '../components/pure/today';
-
-
+import '../App.css';
 
 const Weather = () => {
 
@@ -18,7 +17,6 @@ const Weather = () => {
             .catch((error) => {alert('error en setData: ', error)});                
     },[]);
 
-
     let content;
 
     if (data.score === 0) {
@@ -30,22 +28,37 @@ const Weather = () => {
     } else{
         content = (
             <div>
-                <h1 className='display-2'>
+                <h1 className='display-2 mt-5'>
                     News Weather App
                 </h1>
-                <div>
-                    {<Today score={ data.score?.toFixed(2)}></Today>}
-                </div>
-                <h3>
-                    Buenas noticias: { data.hope }
-                </h3>
-                <h3>
-                    Malas noticias: { data.fear }
-                </h3>
-                <p>
-                    La puntuación de sentimiento del 1 al 10 es de: { data && data.score ? data.score.toFixed(2) : 'N/A'  }
+                <p className='text-start mt-3'>
+                    Las noticias no solo nos informan, también moldean nuestra óptica.<br></br>
+                    Los sentimientos presentes en ellas influyen en nuestras percepciones y opiniones.<br></br>
+                    News Weather App hace un analisis de sentimiento de los titulares principlaes de News API utilizando la librería Sentiment y los
+                    presenta en una interfaz similiar a una aplicación del clima.
                 </p>
+                <div className='container-fluid'>
+                    <div className='row'>
+                        <div className="card col-6">
+                            <div>
+                                {<Today score={ data.score?.toFixed(2)}></Today>}
+                            </div>
+                            <p>
+                                La puntuación del 1 al 10, siendo 1 total negatividad y 10 total positividad, es de: { data && data.score ? data.score.toFixed(2) : 'N/A'  }
+                            </p>
+                        </div>
+                        <div className='col-6'>
+                            <h3>
+                                Noticias relacionadas a la palabra 'hope': { data.hope }
+                            </h3>
+                            <h3>
+                                Noticias relacionadas a la palabra 'fear': { data.fear }
+                            </h3>
+                        </div>
+                    </div>
+                </div>
                 <div>
+                    <h3 className='display-6 mt-5 mb-3'>Análisis de los últimos 6 días</h3>
                     <LastWeek></LastWeek>
                 </div>
         </div>
@@ -60,64 +73,3 @@ const Weather = () => {
 }
 
 export default Weather;
-
-
-
-/**
- *     /*
-    const [ news, setNews ] = useState([]);
-    const [ bads, setBads] = useState(0)
-    const [ goods, setGoods] = useState(0)
-
-    useEffect(() => {  
-        
-        badNewsCount()
-            .then((response) => {
-                setBads(response)
-                })
-            .catch((error) => {alert('error en badnews count: ', error)});
-        goodNewsCount()
-            .then((response) => {
-                setGoods(response)
-                })
-            .catch((error) => {alert('error en goodNewsCount count: ', error)});
-        getGeneralTopHeadlines()
-            .then((response) => {
-                if(response.status === 200){
-                    setNews(response.data.articles)
-                }
-                console.log('response: ',response)
-                console.log('articles: ',response.data.articles)
-                })
-            .catch((error) => {console.log(error)});
-                
-    },[]);
-
-    const sentiment = new Sentiment();
-    const titles = news.map((article) => article.title);
-    let sentimentScores = [];
-    titles.forEach((title) => {
-        let analisys = sentiment.analyze(title);
-        sentimentScores.push(analisys);
-    });
-    const comparatives = sentimentScores.map((score) => score.comparative);
-    const comparativesSuma = comparatives.reduce((a, b) => a + b, 0);
-    const comparativeMedia = comparativesSuma / comparatives.length;
-    console.log( 'sentimentScores: ', sentimentScores);
-    console.log( 'sentimentScore: ', comparativeMedia);
-    const goodsProportion = (goods.totalCount / ( goods.totalCount + bads.totalCount )) * 10;
-    console.log( 'goodsProportion: ', goodsProportion);
-    const totalMedia = (goodsProportion - 5) + comparativeMedia;
-    console.log( 'totalMedia: ', totalMedia);
-
-    let icon;
-    if(totalMedia > 2.5){
-        icon = <img src={sun} alt='sun'></img>;  
-    } else if(totalMedia <= 2.5 && totalMedia >= 0 ){
-        icon = <img src={cloud} alt='sun'></img>;
-    } else if(totalMedia <= 0 && totalMedia >= -2.5 ){
-        icon = <img src={rain} alt='sun'></img>;
-    } else if (totalMedia < -2.5 ){
-        icon = <img src={storm} alt='sun'></img>;
-    }
-*/

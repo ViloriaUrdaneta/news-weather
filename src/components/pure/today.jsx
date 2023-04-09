@@ -13,13 +13,13 @@ const Today = ({ score }) => {
 
     let icon;
     if(score > 7.5){
-        icon = <img src={sun} alt='sun'></img>;  
-    } else if(score <= 7.5 && score >= 5 ){
-        icon = <img src={cloud} alt='sun'></img>;
-    } else if(score < 5 && score >= 2.5 ){
-        icon = <img src={rain} alt='sun'></img>;
-    } else if (score < 2.5 ){
-        icon = <img src={storm} alt='sun'></img>;
+        icon = <img src={sun} className='todayIcon' alt='sun'></img>;  
+    } else if(score <= 7.5 && score > 5 ){
+        icon = <img src={cloud} className='todayIcon' alt='sun'></img>;
+    } else if(score <= 5 && score > 2.5 ){
+        icon = <img src={rain} className='todayIcon' alt='sun'></img>;
+    } else if (score <= 2.5 ){
+        icon = <img src={storm} className='todayIcon' alt='sun'></img>;
     }
 
     return (
@@ -27,9 +27,9 @@ const Today = ({ score }) => {
             <div>
                 { icon }
             </div>
-            <h4>
+            <h6>
                 { esDate }
-            </h4>
+            </h6>
         </div>
     );
 }
