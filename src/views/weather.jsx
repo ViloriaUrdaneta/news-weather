@@ -6,7 +6,7 @@ import '../App.css';
 
 const Weather = () => {
 
-    const [ data, setData] = useState({ score: 0, hope: '', fear: '' });
+    const [ data, setData] = useState({ score: 0, hope: '', fear: '', negative: [], positive: [] });
 
     useEffect(() => {  
         todayScore()
@@ -51,6 +51,18 @@ const Weather = () => {
                             <h3>
                                 Noticias relacionadas a la palabra 'hope': { data.hope }
                             </h3>
+                            <h3>
+                                palabras positivas:
+                            </h3>
+                            <p>
+                                <div className="words">{data.positive.join(", ")}</div>
+                            </p>
+                            <h3>
+                                palabras positivas:
+                            </h3>
+                            <p>
+                                <div className="words">{data.negative.join(", ")}</div>
+                            </p>
                             <h3>
                                 Noticias relacionadas a la palabra 'fear': { data.fear }
                             </h3>

@@ -74,20 +74,16 @@ const LastWeek = () => {
         )
     } else {
         week = (
-            <div className=''>
-                <table className='weekSection'>
-                    <tbody>
-                        {
-                            data.map((day, index) => {
-                                return (
-                                    <WeekDay
-                                        key={index} date={day.esDate} weekday={day.weekday} score={day.score}>
-                                    </WeekDay>
-                                )
-                            })
-                        }
-                    </tbody>
-                </table>
+            <div>
+                {
+                    data.map((day, index) => {
+                        return (
+                            <WeekDay
+                                key={index} date={day.esDate} weekday={day.weekday} score={day.score}>
+                            </WeekDay>
+                        )
+                    })
+                }
             </div>
         )
     }
