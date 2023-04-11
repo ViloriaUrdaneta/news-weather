@@ -8,7 +8,7 @@ const LastWeek = () => {
     const [data, setData] = useState([]);
 
     const lastSevenDays = [];
-    const weekdays = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+    const weekdays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
     for (let i = 1; i < 8; i++) {
         const day = new Date();
